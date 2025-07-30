@@ -504,16 +504,11 @@ class MultimodalImagePerturbationGenerator(nn.Module):
             std = torch.tensor(image_std).view(3, 1, 1)
         
             img_tensor = pixel_value
-            delta_tensor = delta
-            
+
             perturbed_tensor = img_tensor
-            
             perturbed_tensor = perturbed_tensor * std + mean
-            
             perturbed_tensor = perturbed_tensor * 255
-            
             perturbed_tensor = torch.clamp(perturbed_tensor, 0, 255)
-            
             perturbed_tensor = perturbed_tensor.to(torch.uint8)
             
             transform = transforms.ToPILImage()

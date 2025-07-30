@@ -253,55 +253,49 @@ class MultimodalImagePerturbationGenerator(nn.Module):
         rescale_factor = getattr(self.processor.image_processor, 'rescale_factor', 1/255)
         
 
-
         print(f"Qwen2VL parameters: patch_size={patch_size}, temporal_patch_size={temporal_patch_size}, merge_size={merge_size}")
         
         print(pixel_values.shape[0])
         print('--------------------')
         img_data = pixel_values.detach().cpu().numpy()
         
-        try:
             
-            original_image = Image.open('/llmcapagroup1/sft/gaohaoran/security/NGCG/multillm/n02708093_159.JPEG')
-            original_image = original_image.resize((224, 224))
-            original_width, original_height = original_image.size
-            print(f"Original image size: {original_width}x{original_height}")
-            
-            image_processor = Qwen2VLImageProcessor()
-            
-            flatten_patches, grid_thw = image_processor._preprocess(
-                images=original_image,
-                do_resize=True,
-                size={"shortest_edge": 56 * 56, "longest_edge": 28 * 28 * 1280},
-                resample=image_processor.resample,
-                do_rescale=True,
-                rescale_factor=image_processor.rescale_factor,
-                do_normalize=True,
-                image_mean=image_processor.image_mean,
-                image_std=image_processor.image_std,
-                patch_size=image_processor.patch_size,
-                temporal_patch_size=image_processor.temporal_patch_size,
-                merge_size=image_processor.merge_size,
-                do_convert_rgb=True
-            )
-            reconstructed_image = self.inverse_preprocess(
-                        flatten_patches=img_data,
-                        grid_thw=grid_thw,
-                        original_height=original_height,
-                        original_width=original_width,
-                        patch_size=patch_size,
-                        temporal_patch_size=temporal_patch_size,
-                        merge_size=merge_size,
-                        add_noise=False,
-                        noise_scale=0
-                    )
+        original_image = Image.open('../data/image/analog_clock/n02708093_159.JPEG')
+        original_image = original_image.resize((224, 224))
+        original_width, original_height = original_image.size
+        print(f"Original image size: {original_width}x{original_height}")
         
-            images.append(reconstructed_image)
+        image_processor = Qwen2VLImageProcessor()
+        
+        flatten_patches, grid_thw = image_processor._preprocess(
+            images=original_image,
+            do_resize=True,
+            size={"shortest_edge": 56 * 56, "longest_edge": 28 * 28 * 1280},
+            resample=image_processor.resample,
+            do_rescale=True,
+            rescale_factor=image_processor.rescale_factor,
+            do_normalize=True,
+            image_mean=image_processor.image_mean,
+            image_std=image_processor.image_std,
+            patch_size=image_processor.patch_size,
+            temporal_patch_size=image_processor.temporal_patch_size,
+            merge_size=image_processor.merge_size,
+            do_convert_rgb=True
+        )
+        reconstructed_image = self.inverse_preprocess(
+                    flatten_patches=img_data,
+                    grid_thw=grid_thw,
+                    original_height=original_height,
+                    original_width=original_width,
+                    patch_size=patch_size,
+                    temporal_patch_size=temporal_patch_size,
+                    merge_size=merge_size,
+                    add_noise=False,
+                    noise_scale=0
+                )
+    
+        images.append(reconstructed_image)
             
-        except Exception as e:
-            print(f"Qwen2VL inverse processing failed: {e}")
-            fallback_image = self._pixel_values_to_images_general_single(img_data, original_shape)
-            images.append(fallback_image)
         
         return images
 

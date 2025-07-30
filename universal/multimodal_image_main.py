@@ -1,5 +1,4 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 import torch
 import csv
 import argparse
@@ -12,29 +11,13 @@ warnings.filterwarnings("ignore")
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument(
-    '--model_type', type=str, default='qwen2vl3b',
-    help='model type'
-)
-parser.add_argument(
-    '--attack_type', type=str, default='token',
-    help='attack type'
-)
-parser.add_argument(
-    '--repeat_num', type=int, default='3',
-    help='repeat num'
-)
-parser.add_argument(
-    '--steps', type=int, default='10',
-    help='steps'
-)
-parser.add_argument(
-    '--batch_size', type=int, default='5',
-    help='batch_size'
-)
+parser.add_argument('--model_type', type=str, default='qwen2vl3b', help='model type')
+parser.add_argument('--attack_type', type=str, default='token', help='attack type')
+parser.add_argument('--repeat_num', type=int, default='3', help='repeat num')
+parser.add_argument('--steps', type=int, default='1000', help='steps')
+parser.add_argument('--batch_size', type=int, default='5', help='batch_size')
+
 args = parser.parse_args()
-
-
 
 MODEL_TYPE = args.model_type  
 ATTACK_TYPE = args.attack_type 
@@ -47,16 +30,14 @@ EPOCHS = 1
 SYSTEM_PROMPT = "You are a helpful assistant."
 
 MODEL_PATHS = {
-    'llava7b': '/gpfsprd/gaohaoran/models/llava-1.5-7b-hf',
-    'llava13b': '/gpfsprd/gaohaoran/models/llava-1.5-13b-hf',
-    'insblip7b': '/gpfsprd/gaohaoran/models/instructblip-vicuna-7b',
-    'insblip13b': '/gpfsprd/gaohaoran/models/instructblip-vicuna-13b',
-    'qwen2vl3b': '/gpfsprd/gaohaoran/models/Qwen2.5-VL-3B-Instruct',
-    'qwen2vl7b': '/gpfsprd/gaohaoran/models/Qwen2.5-VL-7B-Instruct',
-    'qwen2vl32b': '/gpfsprd/gaohaoran/models/Qwen2.5-VL-32B-Instruct',
+    'llava7b': './models/llava-1.5-7b-hf',
+    'llava13b': './models/llava-1.5-13b-hf',
+    'insblip7b': './models/instructblip-vicuna-7b',
+    'insblip13b': './models/instructblip-vicuna-13b',
+    'qwen2vl3b': './models/Qwen2.5-VL-3B-Instruct',
+    'qwen2vl7b': './models/Qwen2.5-VL-7B-Instruct',
+    'qwen2vl32b': './models/Qwen2.5-VL-32B-Instruct',
 }
-
-
 
 def load_repeat_behaviors_data(file_path, max_samples=20):
     orig_texts = []
@@ -109,11 +90,11 @@ def main():
     print("\nLoading training data...")
    
     if MODEL_TYPE.startswith('qwen2vl'):
-        data_file_path = '/llmcapagroup1/sft/gaohaoran/security/NGCG/lvlm_attacks/data/repeat_responses_with_repeats_qwen.csv'
+        data_file_path = '../data/repeat_responses_with_repeats_qwen.csv'
     elif MODEL_TYPE.startswith('llava'):
-        data_file_path = '/llmcapagroup1/sft/gaohaoran/security/NGCG/lvlm_attacks/data/repeat_responses_with_repeats_llava.csv'
+        data_file_path = '../data/repeat_responses_with_repeats_llava.csv'
     elif MODEL_TYPE.startswith('insblip'):
-        data_file_path = '/llmcapagroup1/sft/gaohaoran/security/NGCG/lvlm_attacks/data/repeat_responses_with_repeats_blip.csv'
+        data_file_path = '../data/repeat_responses_with_repeats_blip.csv'
     else:
         print('No suitable dataset found')    
     orig_texts,image_paths,file_names,requests,token_repeat_3, \

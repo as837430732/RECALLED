@@ -1,5 +1,4 @@
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
 from tqdm import tqdm
 from multimodal_image_generator import MultimodalImagePerturbationGenerator
@@ -10,7 +9,7 @@ from PIL import Image
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 import traceback
-import copy
+
 
 
 class MultimodalImageAttackTrainer:
@@ -262,8 +261,7 @@ class MultimodalImageAttackTrainer:
 
     def visualize_attack_results(self, adversarial_pixel_values, original_images, texts, save_path='./attack_visualization.png'):
         adversarial_images = self.generator.pixel_values_to_images(adversarial_pixel_values)
-        print(adversarial_images)
-        exit()
+
         num_samples = min(3, len(original_images))
         
         fig, axes = plt.subplots(2, num_samples, figsize=(15, 8))

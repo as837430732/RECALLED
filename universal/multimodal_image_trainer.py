@@ -1,5 +1,4 @@
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
 from tqdm import tqdm
 from multimodal_image_generator import MultimodalImagePerturbationGenerator
@@ -57,8 +56,6 @@ class MultimodalImageAttackTrainer:
 
         if self.model_type.startswith('qwen2vl'):
             images = [Image.open(image_path).resize((224, 224)) for image_path in image_paths]
-        elif self.model_type.startswith('blip2'):
-            images = [Image.open(image_path).convert('RGB').resize((224, 224)) for image_path in image_paths]
         elif self.model_type.startswith('insblip'):
             images = [Image.open(image_path).convert('RGB').resize((224, 224)) for image_path in image_paths]
         else:
