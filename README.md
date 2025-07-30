@@ -9,8 +9,8 @@ RECALLED is a research project that implements resource consumption attacks on m
 ## Background
 
 With the integration of vision modalities, additional attack vectors exacerbate the risk of RCAs in large vision-language models (LVLMs). 
-However, existing red-teaming studies have largely overlooked visual inputs as a potential attack surface, resulting in insufficient mitigation strategies against RCAs in LVLMs. To address this gap, we propose RECALLED (\textbf{RE}source \textbf{C}onsumption \textbf{A}ttack on \textbf{L}arge Vision-\textbf{L}anguag\textbf{E} Mo\textbf{D}els), the first approach for exploiting visual modalities to trigger unbounded RCAs red-teaming.
-First, we present \textit{Vision Guided Optimization}, a fine-grained pixel-level optimization, to obtain \textit{Output Recall} adversarial perturbations, which can induce repeating output. Then, we inject the perturbations into visual inputs, triggering unbounded generations to achieve the goal of RCAs. Additionally, we introduce \textit{Multi-Objective Parallel Losses} to generate universal attack templates and resolve optimization conflicts when intending to implement parallel attacks.
+However, existing red-teaming studies have largely overlooked visual inputs as a potential attack surface, resulting in insufficient mitigation strategies against RCAs in LVLMs. To address this gap, we propose RECALLED (**RE**source **C**onsumption **A**ttack on **L**arge Vision-**L**anguag**E** Mo**D**els), the first approach for exploiting visual modalities to trigger unbounded RCAs red-teaming.
+First, we present *Vision Guided Optimization*, a fine-grained pixel-level optimization, to obtain *Output Recall* adversarial perturbations, which can induce repeating output. Then, we inject the perturbations into visual inputs, triggering unbounded generations to achieve the goal of RCAs. Additionally, we introduce *Multi-Objective Parallel Losses* to generate universal attack templates and resolve optimization conflicts when intending to implement parallel attacks.
 
 ### Key Features
 
